@@ -3,17 +3,19 @@ package main
 import "github.com/gin-gonic/gin"
 
 func main() {
-	r := gin.Default()
-	r.GET("/hello", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello, gin!",
-		})
-	})
-    r.GET("/", func(c *gin.Context) {
-    	c.JSON(200, gin.H{
-    		"message": "Welcome to my web site.",
-    	})
+    router := gin.Default()
+    router.GET("/hello", func(c *gin.Context) {
+        name, ok := c.GetQuery("name")
+        if !ok {
+        	c.JSON(400, gin.H{
+                "message": "Bad Request!",
+        	})
+                return
+        }
+        c.JSON(200, gin.H{
+                "message": "Hello, " + name + "!",
+        })
     })
 
-	r.Run()
+    router.Run()
 }
