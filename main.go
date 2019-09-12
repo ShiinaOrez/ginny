@@ -8,6 +8,8 @@ type RegisterPayload struct {
 }
 
 func main() {
+    database := make(map[string]string)
+
 	router := gin.Default()
 	router.POST("/register", func(c *gin.Context) {
         var data RegisterPayload
@@ -17,6 +19,13 @@ func main() {
         	})
         	return
         }
+        if _, has := database[data.Username]; has {
+        	c.JSON(401, gin.H{
+        		"message": "Username already existed.",
+        	})
+        	return
+        }
+        database[data.Username] = data.Password
         c.JSON(200, gin.H{
             "result": data.Username + data.Password,
         })
