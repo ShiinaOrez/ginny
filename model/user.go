@@ -10,8 +10,8 @@ func CheckUserByUsername(username string) bool {
 // 检查用户名密码是否匹配
 func CheckPasswordValidate(username, password string) bool {
     var record string
-	err := DB.Self.QueryRow("SELECT password FROM users WHERE username = ?", username).Scan(&record)
-	return password == record && err == nil
+    err := DB.Self.QueryRow("SELECT password FROM users WHERE username = ?", username).Scan(&record)
+    return password == record && err == nil
 }
 
 func CreateUser(username, password string) {

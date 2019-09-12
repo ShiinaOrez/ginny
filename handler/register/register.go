@@ -1,22 +1,22 @@
 package register
 
 import (
-	"github.com/ShiinaOrez/ginny/model"
-	"github.com/gin-gonic/gin"
+    "github.com/ShiinaOrez/ginny/model"
+    "github.com/gin-gonic/gin"
 )
 
 type RegisterPayload struct {
-	Username  string  `json:"username"`
-	Password  string  `json:"password"`
+    Username  string  `json:"username"`
+    Password  string  `json:"password"`
 }
 
 func Register(c *gin.Context) {
     var data RegisterPayload
     if err := c.BindJSON(&data); err != nil {
-    	c.JSON(400, gin.H{
+        c.JSON(400, gin.H{
             "message": "Bad Request!",
-    	})
-    	return
+        })
+        return
     }
     if model.CheckUserByUsername(data.Username) {
         c.JSON(401, gin.H{
