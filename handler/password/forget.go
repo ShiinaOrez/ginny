@@ -3,6 +3,7 @@ package password
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/ShiinaOrez/ginny/model"
+	"github.com/ShiinaOrez/ginny/handler"
 )
 
 type ForgetPasswordPayload struct {
@@ -13,15 +14,12 @@ type ForgetPasswordPayload struct {
 func ForgetPassword(c *gin.Context) {
 	var data ForgetPasswordPayload
 	if err := c.BindJSON(&data); err != nil {
-		c.JSON(400, gin.H{
-			"message": "Bad Request",
-		})
+		handler.SendBadRequest(c)
 		return
 	}
 	model.UpdatePassword(data.Username, data.NewPassword)
-	c.JSON(200, gin.H{
-		"message": "Update Password Successful.",
-		"new_password": data.NewPassword,
-	})
+	handler.SendResponse(c, struct{
+		NewPassword  string  `json:"new_password"`
+	}{ data.NewPassword })
 	return
 }

@@ -2,6 +2,7 @@ package register
 
 import (
     "github.com/ShiinaOrez/ginny/model"
+    "github.com/ShiinaOrez/ginny/handler"
     "github.com/gin-gonic/gin"
 )
 
@@ -13,20 +14,14 @@ type RegisterPayload struct {
 func Register(c *gin.Context) {
     var data RegisterPayload
     if err := c.BindJSON(&data); err != nil {
-        c.JSON(400, gin.H{
-            "message": "Bad Request!",
-        })
+        handler.SendBadRequest(c)
         return
     }
     if model.CheckUserByUsername(data.Username) {
-        c.JSON(401, gin.H{
-            "message": "User Already Existed!",
-        })
+        handler.SendUnauthorized(c)
         return
     }
     model.CreateUser(data.Username, data.Password)
-    c.JSON(200, gin.H{
-        "message": "Register Successful!",
-    })
+    handler.SendResponse(c, "Successful!")
     return
 }

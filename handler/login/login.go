@@ -1,6 +1,7 @@
 package login
 
 import (
+    "github.com/ShiinaOrez/ginny/handler"
     "github.com/ShiinaOrez/ginny/model"
     "github.com/gin-gonic/gin"
 )
@@ -13,20 +14,13 @@ type LoginPayload struct {
 func Login(c *gin.Context) {
     var data LoginPayload
     if err := c.BindJSON(&data); err != nil {
-        c.JSON(400, gin.H{
-            "message": "Bad Request!",
-        })
+        handler.SendBadRequest(c)
         return
     }
     if !model.CheckPasswordValidate(data.Username, data.Password) {
-        c.JSON(401, gin.H{
-            "message": "Authentication Failed.",
-        })
+        handler.SendUnauthorized(c)
         return
-    } else {
-        c.JSON(200, gin.H{
-            "message": "Authentiaction Success.",
-        })
     }
+    handler.SendResponse(c, "Successful!")
     return
 }
