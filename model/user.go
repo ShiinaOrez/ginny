@@ -14,6 +14,12 @@ func CheckPasswordValidate(username, password string) bool {
     return password == record && err == nil
 }
 
+// 新建一个User
 func CreateUser(username, password string) {
     DB.Self.Query("INSERT INTO users (username, password) VALUES (?, ?)", username, password)
+}
+
+// 更新密码字段
+func UpdatePassword(username, password string) {
+    DB.Self.Query("UPDATE users SET password = ? WHERE username = ?", password, username)
 }
