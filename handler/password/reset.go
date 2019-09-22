@@ -23,7 +23,10 @@ func ResetPassword(c *gin.Context) {
 		handler.SendUnauthorized(c, errno.PasswordInvalid)
 		return
 	} else {
-		model.UpdatePassword(data.Username, data.NewPassword)
+		err := model.UpdatePassword(data.Username, data.NewPassword)
+		if err != nil {
+			handler.SendError(c, errno.UserUpdatePasswordError)
+		}
 		handler.SendResponse(c, struct {
 			NewPassword  string  `json:"new_password"`
 		}{ data.NewPassword })

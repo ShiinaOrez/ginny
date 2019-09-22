@@ -18,7 +18,11 @@ func ForgetPassword(c *gin.Context) {
 		handler.SendBadRequest(c, errno.PayloadBadRequest)
 		return
 	}
-	model.UpdatePassword(data.Username, data.NewPassword)
+	err := model.UpdatePassword(data.Username, data.NewPassword)
+	if err != nil {
+		handler.SendError(c, errno.UserUpdatePasswordError)
+		return
+	}
 	handler.SendResponse(c, struct{
 		NewPassword  string  `json:"new_password"`
 	}{ data.NewPassword })

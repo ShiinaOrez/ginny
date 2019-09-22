@@ -9,4 +9,8 @@ var (
     UserNotFound      = &Error{ErrorCode: "10001", Message: "DB: User Not Found!"}
     UserAleadyExisted = &Error{ErrorCode: "10002", Message: "Register: User already existed!"}
     PasswordInvalid   = &Error{ErrorCode: "10003", Message: "Login: Password Invalid!"}
+    UserUpdatePasswordError = &Error{ErrorCode: "10004", Message: "Update: User update password error."}
+
+    // Util包的错误
+    PasswordHashError = &Error{ErrorCode: "20001", Message: "Generate password hash error internal."}
 )

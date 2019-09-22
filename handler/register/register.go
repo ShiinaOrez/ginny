@@ -3,6 +3,7 @@ package register
 import (
     "github.com/ShiinaOrez/ginny/model"
     "github.com/ShiinaOrez/ginny/handler"
+    "github.com/ShiinaOrez/ginny/util"
     "github.com/ShiinaOrez/ginny/pkg/errno"
     "github.com/gin-gonic/gin"
 )
@@ -22,7 +23,12 @@ func Register(c *gin.Context) {
         handler.SendError(c, errno.UserAleadyExisted)
         return
     }
-    model.CreateUser(data.Username, data.Password)
+    passwordHash, salt, err := util.PasswordHash(data.Password)
+    if err != nil {
+        handler.SendError(c, errno.PasswordHashError)
+        return
+    }
+    model.CreateUser(data.Username, passwordHash, salt)
     handler.SendResponse(c, "Successful!")
     return
 }
